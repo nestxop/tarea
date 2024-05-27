@@ -1,0 +1,105 @@
+% Código para la introducción de las matrices principales.
+
+y14 = 0 - 0.91j;
+y45 = 0 - 0.667j;
+y46 = 0 - 5.33j;
+y25 = 0 - 1.05j;
+y36 = 0 - 1j;
+y56 = 0 - 5.33j;
+
+% #    1             2           3           4                5               6
+Y = [y14,         0 + 0j,     0 + 0j,     y14,             0 + 0j,         0 + 0j;
+     0 + 0j,      y25,        0 + 0j,     0 + 0j,          y25,            0 + 0j;
+     0 + 0j,      0 + 0j,     y36,        0 + 0j,          0 + 0j,         y36;
+     y14,         0 + 0j,     0 + 0j,     y14+y45+y46,     y45,            y46;
+     0 + 0j,      y25,        0 + 0j,     y45,             y25+y45+y56,    y56;
+     0 + 0j,      0 + 0j,     y36,        y46,             y56,            y36+y46+y56];
+
+I = [1;
+     1;
+     1;
+     0;
+     0;
+     0];
+
+V = [0;
+     0;
+     0;
+     0;
+     0;
+     0];
+
+disp(I);
+disp('\n\n\n');
+disp(V);
+disp('\n\n\n');
+disp(Y);
+
+% Código para determinar los "ceros" de la matriz.
+
+% Inicializar contador
+f = 0;
+
+% Recorrer los elementos del vector I
+for k = 1:length(I)
+  if I(k) ~= 0
+    f += 1;
+  end
+end
+
+disp(f);
+
+% Código para la creación de las nuevas matrices.
+
+% Crear las nuevas matrices
+K = Y(1:f, 1:f);
+L = Y(1:f, f+1:end);
+L_T = L.';
+M = Y(f+1:end, f+1:end);
+M_inv = inv(M);
+
+% Mostrar las matrices
+disp(K);
+disp('\n\n\n');
+disp(L);
+disp('\n\n\n');
+disp(L_T);
+disp('\n\n\n');
+disp(M);
+disp('\n\n\n');
+disp(M_inv);
+
+% Código para obtener la matriz Yn.
+
+% Obtener la matriz Yn
+Yn = K - (L * M_inv * L_T);
+
+% Mostrar la matriz Yn
+disp(Yn);
+
+% Código para obtener el vector de corriente recortado.
+
+% Obtener el vector de corriente recortado
+In = I(1:f, :);
+
+% Mostrar el vector In
+disp(In);
+
+% Código para obtener el vector de solución del voltaje.
+
+% Calcular la inversa de Yn
+Yn_inv = inv(Yn);
+
+% Obtener el vector de solución del voltaje para la matriz recortada
+Vn_sol = Yn_inv * In;
+
+% Calcular la inversa de Y
+Y_inv = inv(Y);
+
+% Obtener el vector de solución del voltaje para la matriz completa
+V_sol = Y_inv * I;
+
+% Mostrar los vectores de solución
+disp(Vn_sol);
+disp('\n\n\n');
+disp(V_sol);
